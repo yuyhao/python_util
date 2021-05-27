@@ -1,6 +1,6 @@
 from scipy.stats import chi2
 from sklearn.tree import DecisionTreeClassifier
-from util.util import *
+from util import *
 
 # 决策树分箱
 def optimal_binning_boundary(x, y, bins = 5):
@@ -150,31 +150,4 @@ def get_chimerge_cutoff(ser, tag, max_groups = 5, threshold=None):
     return cutoffs
 
 if __name__ == '__main__':
-    file = '/media/yuyinghao/文档/0_工作/1_算法/2_诚信评分模型/模型结果-专家打分/结果/data_driver_final_cut.xlsx'
-    data = pd.read_excel(file, engine='openpyxl')
-
-    # 标签构造
-    data_sub = data[data['is_new'] == 0]  # 入职>=15天的司机
-    data_subset = data_sub
-    data_sub_copy = data_subset.copy()
-    data_sub_copy.loc[:, 'label'] = np.where(data_subset['sum_sc_adjust'] < 50, 1, 0)  # 将诚信不良的部分作为正样本
-    data = data_sub_copy
-
-    # 测试多种分箱方法
-    var_name = 'emplyee_year'
-
-
-    # get_chimerge_cutoff(data[var_name], data['label'], max_groups = 5)
-    bins = best_ks_box(data, var_name, 5)
-    bins = optimal_binning_boundary(data[var_name], data['label'])
-
-    # R的决策树最优分箱方法 bins = [0.05, 0.2, 0.5, 0.7, 6.26]
-
-    # 将列表转成dict
-    dic_bins = list2dic(bins)
-
-    # 分箱
-    data['emplyee_year_cut'] = cut_score(data[var_name], dic_bins)
-
-    # 计算woe
-    cal_woe(data['emplyee_year_cut'], data['label'])
+    ...
